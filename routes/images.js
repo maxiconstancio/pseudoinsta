@@ -20,7 +20,7 @@ router.get('/', authenticated, getAlbum);
 
 //Eliminar un album
 
-router.delete('/album/:id', deleteAlbum);
+router.delete('/album/:id', authenticated, authAdmin, deleteAlbum);
 
 //Eliminar una imagen
 

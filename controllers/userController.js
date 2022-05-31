@@ -7,7 +7,9 @@ const template = require('../utils/emailTemplate');
 const awsImageUploader = require('../controllers/awsActions');
 const userController = {
   userList: (req, res) => {
-    db.User.findAll()
+    db.User.findAll({
+      where: {roleId: 2}
+    })
       .then((result) => {
         const response = {
           status: 200,
@@ -136,6 +138,7 @@ const userController = {
   },
   // End User CRUD
   login: async (req, res) => {
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -183,16 +186,16 @@ const userController = {
         });
 
         const {
-          firstName, lastName, email, image, roleId,
+           firstName, lastName, email,  roleId,
         } = user;
 
         if (user) {
           res.status(200).json({
             msg: {
+              id,
               firstName,
               lastName,
               email,
-              image,
               roleId,
             },
           });

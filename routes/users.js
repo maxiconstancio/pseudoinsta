@@ -26,23 +26,24 @@ router.get('/', authAdmin, userList);
 // User get data
 router.get('/auth/me', authenticated, getData);
 
+// User standard list 
+router.get('/list', authenticated, authAdmin, userList);
+
 // User register
 router.post('/auth/signup', userValidation.signup, signup);
 
 // User login
-router.post('/auth/login', userValidation.login, login);
+router.post('/auth/login', login);
 
 // User delete
 router.delete('/:id', authenticated, authOwnership('User'), userDelete);
 
 
-//test subida a aws
+//Verify Token
 
-router.post('/upload', upload('imageUrl'), async (req, res) => {
-  console.log(req)
-  let image = await awsImageUploader.awsUpload(req.file)
-  res.status(200).json(image);
-}) 
+router.get('/verify', authenticated, (req,res) => {
+  res.status(200).json('logged')
+});
 
 
 
