@@ -39,7 +39,7 @@ const userController = {
           {
             firstName,
             lastName,
-            photo: req.user.image,
+            phone,
           },
           {
             where: {
@@ -85,14 +85,16 @@ const userController = {
         db.User.create({
           firstName: req.body.firstName,
           lastName: req.body.lastName,
+          phone: req.body.phone,
+          textEvent: req.body.textEvent,
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 10),
         }).then(async (user) => {
           const token = await createToken(user.id);
           res.header('Authorization', `Bearer ${token}`);
-          await sendMail(user.email, template.subject, template.html).then(() => {
+          //await sendMail(user.email, template.subject, template.html).then(() => {
             const response = {
-              message: 'Account created successfully! Check your email spam box!',
+              message: 'Account created successfully!',
               data: {
                 firstName: user.firstName,
                 lastName: user.lastName,
@@ -100,9 +102,9 @@ const userController = {
               },
             };
             return res.json(response);
-          }).catch((err) => res.status(500).json({
+         /* }).catch((err) => res.status(500).json({
             msg: `Please contact the administrator, Error: ${err.message}`,
-          }));
+          }));*/
         })
           .catch((err) => res.status(500).json(err));
       }
@@ -186,7 +188,7 @@ const userController = {
         });
 
         const {
-           firstName, lastName, email,  roleId,
+           firstName, lastName, phone, textEvent, email,  roleId,
         } = user;
 
         if (user) {
@@ -195,6 +197,8 @@ const userController = {
               id,
               firstName,
               lastName,
+              phone,
+              textEvent,
               email,
               roleId,
             },
@@ -211,6 +215,47 @@ const userController = {
       });
     }
   },
+
+  changePWD: async (req, res) => {
+    const user = await db.User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+    if (user !== '') {
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+      db.User.update(
+        {
+          password: bcrypt.hashSync(req.body.newPassword, 10),
+        },
+        {
+          where: {
+            id: req.user.id,
+            
+          },
+        },
+      )
+        .then(() => {
+          const response = {
+            status: 200,
+            message: 'Password changed successfully!',
+          };
+          res.json(response);
+        })
+        .catch((error) => {
+          res.json(error);
+        });
+    } else {
+      const response = {
+        status: 401,
+        message: 'Wrong Password!',
+      };
+      res.json(response);
+    }
+  } else {
+    res.status(500).json('The password not match')
+  }
+  }
 };
 
 module.exports = userController;

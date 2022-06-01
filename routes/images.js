@@ -5,6 +5,7 @@ const authenticated = require('../middlewares/authenticated');
 const authOwnership = require('../middlewares/authOwnership');
 const authAdmin = require('../middlewares/authAdmin')
 const upload = require('../utils/multer');
+const sendMail = require('../middlewares/sendMail');
 
 const router = express.Router();
 
@@ -15,6 +16,10 @@ router.post('/', upload('imageUrl'), watermark, createImage);
 //Ver album
 
 router.get('/', authenticated, getAlbum);
+
+//Enviar mail confirmacion
+
+router.post('/confirm', authenticated, authAdmin, sendMail);
 
 
 

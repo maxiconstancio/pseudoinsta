@@ -15,6 +15,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      phone: {
+        allowNull: false,
+        type: Sequelize.BIGINT,
+      },
+      textEvent: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
       email: {
         allowNull: false,
         type: Sequelize.STRING,

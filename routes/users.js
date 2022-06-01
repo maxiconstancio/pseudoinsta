@@ -9,6 +9,7 @@ const {
   userEdit,
   getData,
   userDelete,
+  changePWD,
 } = require('../controllers/userController');
 const userValidation = require('../validations/user');
 const upload = require('../utils/multer');
@@ -38,11 +39,16 @@ router.post('/auth/login', login);
 // User delete
 router.delete('/:id', authenticated, authOwnership('User'), userDelete);
 
+//Change Password User 
+
+router.patch('/auth/me', authenticated, changePWD)
+
 
 //Verify Token
 
 router.get('/verify', authenticated, (req,res) => {
-  res.status(200).json('logged')
+  
+  if (req.user.roleId === 1) { res.status(200).json('admin')} else { res.status(200).json('standard')};
 });
 
 

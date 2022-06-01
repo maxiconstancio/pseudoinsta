@@ -2,7 +2,7 @@ const { sign, verify } = require('jsonwebtoken');
 const { jwtSecret } = require('../config/config');
 
 // eslint-disable-next-line arrow-body-style
-const createToken = (id, expiresIn = 60 * 60) => {
+const createToken = (id, expiresIn = 60 * 60 * 24) => {
   return new Promise((resolve, reject) => {
     if (!id) {
       reject(new Error('datos invalidos'));
