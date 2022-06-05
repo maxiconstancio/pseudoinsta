@@ -22,28 +22,24 @@ const userController = {
         res.json(error);
       });
   },
-  userEdit: (req, res) => {
-    const errors = validationResult(req);
+  userEditOrg: (req, res) => {
+   /* const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({
         errors: errors.array(),
       });
-    } else {
-      const {
-        firstName, lastName,
-      } = req.body;
-
-      const user = db.User.findByPk(req.params.id);
+    } else {*/
+      const organizationId = req.body.organizationId;
+     
+      const user = db.User.findByPk(req.user.id);
       if (user !== '') {
         db.User.update(
           {
-            firstName,
-            lastName,
-            phone,
+            organizationId
           },
           {
             where: {
-              id: req.params.id,
+              id: req.body.userId,
             },
           },
         )
@@ -64,7 +60,7 @@ const userController = {
         };
         res.json(response);
       }
-    }
+    
   },
   signup: async (req, res) => {
     const errors = validationResult(req);

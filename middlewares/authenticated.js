@@ -14,6 +14,7 @@ const authenticated = async (req, res, next) => {
     }
     const decodeToken = await verifyToken(token);
     req.user = decodeToken;
+    
     return next();
   } catch (error) {
     return res.status(401).json({

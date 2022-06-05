@@ -8,14 +8,15 @@ const authAdmin = async (req, res, next) => {
     const auth = req.headers.authorization;
     const token = auth?.replace('Bearer ', '');
     const decodeToken = await verifyToken(token);
-
+  
     const user = await db.User.findOne({
       where: {
         id: decodeToken.id,
       },
     });
+    
     if (user.roleId !== 1) {
-      throw new Error('Access denied');
+      res.status(403).json('Access denied');
     }
     next();
   } catch (error) {

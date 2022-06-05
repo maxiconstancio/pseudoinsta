@@ -1,16 +1,17 @@
 const Jimp = require("jimp");
 
 
-const LOGO = "./utils/img/maxi-logo.png";
+const LOGO = process.env.LOGO || "./utils/img/maxi-logo.png"; //Subir logo a bucket de amazon
 
 const LOGO_MARGIN_PERCENTAGE = 5;
 
 
 
 const watermark = async (req, res, next) => {
-  console.log(req.file);  
+  
+  for (i = 0; i < req.files.length; i++ ) {
   const [image, logo] = await Promise.all([
-    Jimp.read(req.file.buffer),
+    Jimp.read(req.files[i].buffer),
     Jimp.read(LOGO)
   ]);
    
@@ -29,9 +30,9 @@ const watermark = async (req, res, next) => {
       opacityDest: 1  
     }
   ]);
-  const buff = await imagenWatermark.getBufferAsync(req.file.mimetype);
-  req.file.buffer = buff;
-  
+  const buff = await imagenWatermark.getBufferAsync(req.files[i].mimetype);
+  req.files[i].buffer = buff;
+}
   next();
 };
 

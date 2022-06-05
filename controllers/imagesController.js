@@ -15,13 +15,25 @@ const createImage = async (req, res, next) => {
   
   
   try {
-    if (typeof req.file === 'undefined') throw new Error('Image is required');
-    userId = req.body.userId;
-    const url = await awsUpload(req.file);
-    const images = await Images.create({
-      url, userId
-    });
-    res.status(201).json({ images });
+    if (typeof req.files === 'undefined') res.status(500).json('Image is required');
+    
+    const userId = req.body.userId;
+    try {
+      const arrImages =  req.files.map( async (file) => {
+       
+        const url = await awsUpload(file);
+        const image = await (Images.create({
+          url, userId
+        }))
+        return image ;
+        
+      })
+      res.status(201).json('Upload Succesfully');
+    } catch (error) {
+      res.status(500).json(error)
+    }
+    
+    
   } catch (error) {
     next(error);
   }

@@ -9,6 +9,7 @@ const s3 = require('../config/s3');
  */
 const awsUpload = async (fileImage) => {
   // 1) seteamos los parametros para subir a s3
+
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: uuidv4() + path.extname(fileImage.originalname),
@@ -22,9 +23,10 @@ const awsUpload = async (fileImage) => {
     
     // 2) espero hasta subir la imagen y devuelvo la url
     const storedFile = await s3.upload(params).promise();
+    
     return storedFile?.Location;
   } catch (err) {
-    throw new Error(err.message);
+    res.status(500).json(err.message);
   }
 };
 

@@ -10,6 +10,7 @@ const {
   getData,
   userDelete,
   changePWD,
+  userEditOrg,
 } = require('../controllers/userController');
 const userValidation = require('../validations/user');
 const upload = require('../utils/multer');
@@ -43,6 +44,9 @@ router.delete('/:id', authenticated, authOwnership('User'), userDelete);
 
 router.patch('/auth/me', authenticated, changePWD)
 
+//Assign Organization User 
+
+router.patch('/organization', authenticated, authAdmin, userEditOrg);
 
 //Verify Token
 
