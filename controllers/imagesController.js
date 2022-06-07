@@ -19,7 +19,7 @@ const createImage = async (req, res, next) => {
     
     const userId = req.body.userId;
     try {
-      const arrImages =  req.files.map( async (file) => {
+        req.files.map( async (file) => {
        
         const url = await awsUpload(file);
         const image = await (Images.create({

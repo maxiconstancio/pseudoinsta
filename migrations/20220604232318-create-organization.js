@@ -38,20 +38,16 @@ module.exports = {
       logoUrl: {
         type: Sequelize.STRING
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        }
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        
         type: Sequelize.DATE
       }
     });

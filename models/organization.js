@@ -23,13 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     twitter: DataTypes.STRING,
     imageUrl: DataTypes.STRING,
     logoUrl: DataTypes.STRING,
-    userId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Users',
-        key: 'id',
-      },
-    },
+    
   }, {
     sequelize,
     modelName: 'organizations',

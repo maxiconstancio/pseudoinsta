@@ -85,6 +85,7 @@ const userController = {
           textEvent: req.body.textEvent,
           email: req.body.email,
           password: bcrypt.hashSync(req.body.password, 10),
+          roleId: req.body.roleId,
         }).then(async (user) => {
           const token = await createToken(user.id);
           res.header('Authorization', `Bearer ${token}`);
@@ -95,6 +96,7 @@ const userController = {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                roleId: user.roleId,
               },
             };
             return res.json(response);
@@ -184,12 +186,12 @@ const userController = {
         });
 
         const {
-           firstName, lastName, phone, textEvent, email,  roleId,
+           firstName, lastName, phone, textEvent, email,  roleId, organizationId,
         } = user;
 
         if (user) {
           res.status(200).json({
-            msg: {
+            
               id,
               firstName,
               lastName,
@@ -197,7 +199,8 @@ const userController = {
               textEvent,
               email,
               roleId,
-            },
+              organizationId
+            
           });
         } else {
           res.status(404).json({
